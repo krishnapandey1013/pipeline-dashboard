@@ -54,7 +54,9 @@ st.line_chart(
 )
 
 # Smooth pressure line
-filtered_df['pressure_smooth'] = filtered_df['pressure'].rolling(5).mean().fillna(method='bfill')
+
+filtered_df['pressure'] = pd.to_numeric(filtered_df['pressure'], errors='coerce')
+filtered_df['pressure_smooth'] = filtered_df['pressure'].rolling(5).mean().bfill()
 
 # Heatmap
 st.subheader("🔥 Pressure Heatmap")
