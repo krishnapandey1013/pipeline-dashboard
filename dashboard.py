@@ -14,6 +14,8 @@ st.caption("Real-time monitoring of pipeline pressure with anomaly detection and
 # Load data
 df = pd.read_csv("pipeline_data.csv")
 df['time'] = pd.to_datetime(df['time'])
+df['pressure'] = pd.to_numeric(df['pressure'], errors='coerce')
+df['pressure_smooth'] = df['pressure'].rolling(5).mean().bfill()
 
 # Anomaly detection
 mean = df['pressure'].mean()
@@ -43,10 +45,6 @@ st.line_chart(
     filtered_df.set_index('time')[['pressure', 'pressure_smooth']]
 )
 
-# Smooth pressure line
-
-filtered_df['pressure'] = pd.to_numeric(filtered_df['pressure'], errors='coerce')
-filtered_df['pressure_smooth'] = filtered_df['pressure'].rolling(5).mean().bfill()
 
 # Heatmap
 st.subheader("🔥 Pressure Heatmap")
