@@ -15,8 +15,6 @@ st.caption("Real-time monitoring of pipeline pressure with anomaly detection and
 df = pd.read_csv("pipeline_data.csv")
 df['time'] = pd.to_datetime(df['time'])
 
-df['pressure_smooth'] = df['pressure'].rolling(5).mean().fillna(method='bfill')
-
 # Anomaly detection
 mean = df['pressure'].mean()
 std = df['pressure'].std()
@@ -41,14 +39,6 @@ col4.metric("Min Pressure", round(filtered_df['pressure'].min(), 2))
 
 # Line chart
 st.subheader("📈 Pressure Over Time")
-
-filtered_df['pressure_smooth'] = (
-    filtered_df['pressure']
-    .rolling(5)
-    .mean()
-    .fillna(method='bfill')
-)
-
 st.line_chart(
     filtered_df.set_index('time')[['pressure', 'pressure_smooth']]
 )
